@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name = "viewport" content="width=device-width">
+		<link rel="stylesheet" href="{{ url_for('static', filename='common.css') }}">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap" rel="stylesheet">
+		<title>フォームページ</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+	</head>
+	<body>
+		<div id="title_boxN" style="display: none;">
+			<input id="new_title" type="text" maxlength="10">
+			<!-- <button onclick="updateTitle()">更新</button> -->
+			<a href="#" class="btn-square-toy" onclick="updateTitle()">OK</a>
+		</div>
+		<div id="title_boxO" onclick="editName()">
+			<h1 id="old_title">まるまるぎんこう</h1>
+		</div>
+		<div class="top_space"></div>
+		<div class="container">
+			<div class="book">
+				<div class="box">
+					<div class="box_content">
+						<div>
+							<h2>つうちょう</h2>
+							<p>PASS BOOK</p>
+						</div>
+						<img src="{{ url_for('static', filename='ATMicon.png') }}" width="70px">
+					</div>
+				</div>
+				<div class="space"></div>
+				<div class="box2">
+					<div class="table-container"  {% if not account %}hidden{% endif %}>
+						<div class="in_box"><span id="in_title" sty>まるまるぎんこう</span>ふつうよきん</div>
+						<table>
+							<tr>
+								<!-- <th>id</th> -->
+								<th>年 - 月 - 日</th>
+								<th class="th_name">ことがら</th>
+								<th>金額</th>
+								<!-- <th>出入金</th> -->
+								<th>支払い</th>
+								<th>預かり</th>
+								<th>合計</th>
+							</tr>
+						{% for pay in account %}
+							<tr>
+								<!-- <td>{{ pay.id }}</td> -->
+								<td>{{ pay.pay_date }}</td>
+								<td onclick="editTask(this)">{{ pay.pay_name }}</td>
+								<td>{{ pay.amount }}</td>
+								<!-- <td>{{ pay.pay_which }}</td> -->
+								<td><span class="zero-value">{{ pay.pay_amount }}</span></td>
+								<td>{{ pay.get_amount }}</td>
+								<td>{{ pay.sum_amount }}</td>
+							</tr>
+							<tr>
+								<td colspan="7">
+								    <form method="POST" action="/edit" style="display: none;" class="editblock">
+									  <input type="hidden" name="id" value="{{ pay.id }}">
+									  <div>
+										<input type="text" name="update_task" id="update_task">
+										<button type="submit">更新</button>
+									  </div>
+								    </form>
+								</td>
+							</tr>
+						{% endfor %}
+						</table>
+						<div class="shadow"></div>
+						<div class="square"></div>
+						<div class="border"></div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="card">
+				<div class="box">
+					<div class="box_content">
+						<div>
+							<h2>カード</h2>
+							<p>CARD</p>
+						</div>
+						<img src="{{ url_for('static', filename='CARDicon.png') }}" width="70px">
+					</div>
+				</div>
+				<div class="space"></div>
+				<div class="box2"></div>
+			</div>
+		</div>
+		<div class="select_button">
+			<form method="POST" action="/" id="myForm">
+				<input class="radio" type="radio" name="pay_which" id="on" value="+" checked="">
+				<label for="on" class="switch-on">+</label>
+				<input class="radio" type="radio" name="pay_which" id="off" value="-">
+				<label for="off" class="switch-off">-</label>
+	
+				<input type="text" name="text" placeholder ="概要" maxlength="10">
+				<input type="number" name="amount" placeholder="金額">
+				<input type="date" name="date" id="payDate">
+				<input type="submit" value="送信" id="submitBtn">
+			</form>
+		</div>
+
+		{% if account %}
+		<div class="pagination">
+		{% if page > 1 %}
+			<a class="prev" href="?page={{ page - 1 }}"><img src="{{ url_for('static', filename='dolphinicon.png') }}" width="55px" style="transform:rotate(-130deg);"></a>
+		{% endif %}
+		{% if page < total_pages %}
+			<a class="next" href="?page={{ page + 1 }}"><img src="{{ url_for('static', filename='shrimpicon.png') }}" width="45px" style="transform:rotate(50deg);"></a>
+		{% endif %}
+		</div>
+		{% endif %}
+
+		<!-- <canvas id="stage"></canvas> -->
+		<div style="position:relative;width:300px;height:250px;">
+			<canvas id="stage"></canvas>
+		</div>
+
+		<script>
+			const today = new Date();
+			function dateFormat(today, format){
+				format = format.replace("YYYY", today.getFullYear());
+				format = format.replace("MM", ("0"+(today.getMonth() + 1)).slice(-2));
+				format = format.replace("DD", ("0"+ today.getDate()).slice(-2));
+				return format;
+			}
+			const data = dateFormat(today,'YYYY-MM-DD');
+			const field = document.getElementById("payDate");
+			field.value = data;
+			field.setAttribute("min", data);
+
+
+			//「月別データ」
+			var mydata = {
+			labels: ["１月", "２月", "３月", "４月", "５月", "６月", "７月"],
+			datasets: [
+			{
+				label: '数量',
+				hoverBackgroundColor: "rgba(255,99,132,0.3)",
+				data: [65, 59, 80, 81, 56, 55, 48],
+			}
+			]
+			};
+
+			//「オプション設定」
+			var options = {
+				title: {    
+				display: true,
+				text: 'サンプルチャート'
+				},
+			};
+
+			var canvas = document.getElementById('stage');
+			var chart = new Chart(canvas, {
+
+				type: 'bar',  //グラフの種類
+				data: mydata,  //表示するデータ
+				options: options  //オプション設定
+			});
+
+			document.getElementById("myForm").addEventListener("submit", function (event) {
+				event.preventDefault();
+				var tableContainer = document.querySelector(".table-container");
+				tableContainer.classList.add("finish");
+					setTimeout(function () {
+						document.getElementById("myForm").submit();
+					}, 1500);
+				});
+
+			
+
+			function editTask(taskDiv) {
+				var editblock = document.getElementsByClassName("editblock")[0];
+				var taskInput = document.getElementById("update_task");
+				// var taskInput = editblock.querySelector('input[name="update_task"]');
+				taskInput.style.width = "120px"
+				editblock.style.margin = "0 140px"
+				editblock.style.display = "flex"
+				taskInput.focus();
+
+				console.log(taskDiv);
+				console.log(editblock);
+			}
+
+			function editName(){
+				var titleBoxN = document.getElementById("title_boxN");
+				var titleBoxO = document.getElementById("title_boxO");
+				var newTitle = document.getElementById("new_title");
+				var oldTitle = document.getElementById("old_title");
+				titleBoxN.classList.add("title_new");
+				titleBoxN.style.display = "flex";
+				newTitle.value = oldTitle.textContent;
+				newTitle.focus();
+			}
+			function updateTitle(){
+				var newTitle = document.getElementById("new_title").value;
+				var oldTitle = document.getElementById("old_title");
+				var inTitle = document.getElementById("in_title");
+				oldTitle.textContent = newTitle;
+				inTitle.textContent = newTitle;
+				var titleBoxN = document.getElementById("title_boxN");
+				var titleBoxO = document.getElementById("title_boxO");
+				titleBoxN.style.display = "none";
+				titleBoxO.style.display = "block";
+			}
+		</script>
+	</body>
+</html>
