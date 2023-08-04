@@ -1,9 +1,6 @@
 body {
 	margin: 0;
 	padding: 0;
-	/* background-color: #eceded; */
-	/* font-family:"alba", fantasy; */
-	/* font-family: "Yu Gothic", "YuGothic", system-ui; */
 	font-family: 'Yusei Magic', sans-serif;
 }
 #title_boxO{
@@ -14,15 +11,15 @@ body {
 	position: absolute;
 	left: 85px;
 	top: 45px;
-	z-index: 1;
+	z-index: 3;
 }
 .btn-square-toy {
 	position: relative;
 	display: inline-block;
 	padding: 0.25em 0.5em;
 	text-decoration: none;
-	background: #00BCD4;/*背景色*/
-	color: #00BCD4;/*=背景色*/
+	background: #00BCD4;
+	color: #00BCD4;
 	box-shadow: inset 0 2px 0 rgba(255,255,255,0.2);
 	border-bottom: solid 2px #118e9e;
 	border-radius: 4px;
@@ -60,9 +57,9 @@ h1:before {
 }
 .top_space {
 	position: absolute;
-	/* background-color: #eceded; */
+	background-color: white;
 	width: 100%;
-	height: 5px;
+	height: 10px;
 	z-index: 3;
 }
 .space{
@@ -78,23 +75,20 @@ h1:before {
 	background-position: bottom;
 	text-align: center;
 }
-table th{
+.table-container > table th{
 	border: 1px solid black;
 	padding: 5px;
 }
 .th_name{
-	padding: 0 50px;
+	width: 190px;
 }
-table td{
+.table-container > table td{
 	padding: 2px 5px;
 }
-table{
-	/* position: absolute; */
+.table-container > table{
 	margin-top: 1px;
 	margin-left: 1.5px;
 	width: 550px;
-	/* height: 500px; */
-	/* z-index: -1; */
 	color: rgb(69, 69, 69);
 	background-color: rgb(252, 243, 231);
 }
@@ -113,8 +107,8 @@ table{
 	border: 1px solid black;
 	padding: 10px;
 	position: relative;
-	top: 5px;
-	z-index: 2;
+	top: 10px;
+	z-index: 3;
 	background-color: rgb(180, 180, 180);
 }
 .box_content {
@@ -143,15 +137,14 @@ table{
 .select_button{
 	margin-left: 400px;
 	position: absolute;
-	/* top: calc(100% + 10px); */
-	top: 90%;
-	left: 350px;
-	/* right: 0; */
+	top: 600px;
+	left: 360px;
 	margin: 0 auto;
-	z-index: 1;
+	z-index: 6;
 	text-align: center;
-	/* position: relative;
-	z-index: 1; */
+}
+.thing{
+	margin-left: 15px;
 }
 .select_button label{
 	display: block;
@@ -181,11 +174,20 @@ table{
 	background-color: #e67168;
 	color: #fff;
 }
-.table-container {
-	position: absolute;
-	top: 130px;
-	z-index: 0;
-	width: 600px;
+
+#submitBtn {
+	display: inline-block;
+	padding: 0.5em 1em;
+	text-decoration: none;
+	background: #668ad8;
+	color: #FFF;
+	border-bottom: solid 4px #627295;
+	border-radius: 3px;
+}
+#submintBtn:active {
+	-webkit-transform: translateY(4px);
+	transform: translateY(7px);
+	border-bottom: none;
 }
 
 @keyframes slideUp {
@@ -193,13 +195,13 @@ table{
 		transform: translateY(0);
 	}
 	to {
-		transform: translateY(-300%);
+		transform: translateY(-450px);
 	}
 }
 
 @keyframes slideDown {
 	from {
-		transform: translateY(-300%);
+		transform: translateY(-450px);
 	}
 	to {
 		transform: translateY(0);
@@ -207,6 +209,10 @@ table{
 }
 
 .table-container {
+	position: absolute;
+	top: 150px;
+	z-index: 2;
+	width: 600px;
 	animation: slideDown 1s ease-in-out forwards;
 }
 
@@ -218,7 +224,7 @@ table{
 	top: 5px;
 	left: 5px;
 	width: 553px;
-	height: 440px;
+	height: 390px;
 	background-color: #869198;
 	border-radius: 10px;
 	z-index: -2;
@@ -228,7 +234,7 @@ table{
 	top: 0;
 	left: 0;
 	width: 550px;
-	height: 437px;
+	height: 390px;
 	background-color: rgb(252, 243, 231);
 	z-index: -1;
 	border: 1.5px solid black;
@@ -237,49 +243,177 @@ table{
 .border {
 	content: "";
 	position: absolute;
-	top: 217px;
+	top: 227px;
 	left: 0;
 	width: 552px;
 	height: 2px;
 	background-color: black;
-	/* border: 2px solid black; */
 }
 
 @media screen and (max-width: 1240px){
 	.card {
 		display: none;
 	}
+	.dentaku_box{
+		display: none;
+	}
 }
-@media screen and (max-width: 1000px){
-	/* table td{
-		padding: 2px 5px;
-	} */
-}
-@media screen and (max-width: 700px){
+@media screen and (max-width: 770px){
+	.table-container{
+		width: 400px;
+	}
 	.book{
-		width: 460px;
-		padding-left: 20px;
+		width: 420px;
+		padding-left: 340px;
 	}
 	#stage{
 		display: none;
 	}
-	table th{
-		padding: 0px;
+	.table-container > table th{
+		padding: 2px;
 	}
-	table td{
-		padding: 0px 0px;
+	.th_name{
+		padding: 0 10px;
+	}
+	.table-container > table td{
+		padding: 2px 2px;
 	}
 	.select_button{
-		left: 0px;
+		left: 100px;
+		top: 90%;
+	}
+	.table-container > table, .square, .shadow, .border{
+		width: 400px;
+	}
+	.in_box{
+		margin: 5px 0px 5px 200px;
+		background-size: 100% 6px;
+	}
+}
+@media screen and (max-width: 390px){
+	.table-container{
+		width: 360px;
+	}
+	.book{
+		width: 390px;
+		padding-left: 0;
+	}
+	.box{
+		padding-left: 5px;
+	}
+	.table-container > table th{
+		padding: 0px;
+	}
+	.th_name{
+		padding: 0;
+	}
+	.table-container > table td{
+		padding: 0;
+	}
+	.select_button{
+		left: 0;
+	}
+	.table-container > table, .square, .shadow, .border{
+		width: 370px;
+		left: 0;
+	}
+	.in_box{
+		margin: 5px 0px 5px 150px;
+		background-size: 100% 6px;
+	}
+	.select_button{
+		left: 10px;
+		top: 70%;
+	}
+	.select_button label{
+		width: 30px;
+	}
+	.thing{
+		margin-left: 10px;
+		width: 80px;
 	}
 }
 .prev{
 	position: absolute;
-	top: 560px;
+	top: 540px;
 	left: 325px;
 }
 .next{
 	position: absolute;
-	top: 555px;
+	top: 545px;
 	left: 915px;
+}
+.dentaku_box{
+	position: absolute;
+	top: 290px;
+	left: 950px;
+}
+.dentaku_table {
+	width: 250px;
+	height: 200px;
+	border: solid 1px #dcdcdca4;
+	border-right: solid 4px #dcdcdca4;
+	border-bottom: solid 4px #dcdcdca4;
+	border-radius: 10px;
+	text-align: center;
+	padding: 8px;
+	margin: 20px;
+}
+td input {
+	font-size: 20px;
+	width: 60px;
+	height: 60px;
+	display: inline-block;
+	position: relative;
+	text-decoration: none;
+	background: #668ad8;
+	color: #FFF;
+	border-bottom: solid 5px #36528c;
+	border-right: solid 5px #5375bd;
+}
+td input:before {  
+	content: " ";
+	position: absolute;
+	bottom: -5px;
+	left: -1px;
+	width: 0;
+	height: 0;
+	border-width: 0 6px 6px 0px;
+	border-style: solid;
+	border-color: transparent;
+	border-bottom-color: #FFF;
+}
+    
+td input:after {  
+	content: " ";
+	position: absolute;
+	top: -1px;
+	right: -5px;
+	width: 0;
+	height: 0;
+	border-width: 0px 6px 6px 0px;
+	border-style: solid;
+	border-color: #FFF;
+	border-bottom-color: transparent;
+}    
+td input:active {
+	border:none;
+	-webkit-transform: translate(2px,2px);
+	transform: translate(2px,2px);
+}
+    
+td input:active:after, td input:active:before {
+	content: none;
+}
+.operator{
+	background-color: #87cefa;
+}
+td input:hover {
+      background: #4a659e;
+}
+.operator:hover {
+      background: #339cdd;
+}
+.operator:active {
+	background: #2c80b4;
 }
