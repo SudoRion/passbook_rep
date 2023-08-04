@@ -7,12 +7,14 @@ body {
 	position: absolute;
 	left: 90px;
 }
+/* 編集の場合追加するクラス */
 .title_new{
 	position: absolute;
 	left: 85px;
-	top: 45px;
+	top: 40px;
 	z-index: 3;
 }
+/* 編集OKボタン ーーーーーーーーーーーーー*/
 .btn-square-toy {
 	position: relative;
 	display: inline-block;
@@ -26,13 +28,12 @@ body {
 	font-weight: bold;
 	text-shadow: -1px -1px rgba(255, 255, 255, 0.44), 1px 1px rgba(0, 0, 0, 0.38);
 }
-    
 .btn-square-toy:active {
-	/*押したとき*/
 	border-bottom: solid 2px #00BCD4;
 	box-shadow: none;
 	text-shadow: -1px -1px rgba(255, 255, 255, 0.3), 1px 1px rgba(0, 0, 0, 0.3);
 }
+/* ーーーーーーーーーーーーーーーーーーーー */
 h1 {
 	position: relative;
 	color: #158b2b;
@@ -67,6 +68,7 @@ h1:before {
 	height: 10px;
 	background-color: black;
 }
+/* 通帳の名前ーーーーーーーーーーーーーーーーーーーーーー */
 .in_box{
 	margin: 10px 8px 10px 280px;
 	background-image: linear-gradient(135deg, #a6ddb0 60%, #CFF2AC 100%);
@@ -75,6 +77,7 @@ h1:before {
 	background-position: bottom;
 	text-align: center;
 }
+/* 通帳ーーーーーーーーーーーーーーーーーーーーーーーーーー */
 .table-container > table th{
 	border: 1px solid black;
 	padding: 5px;
@@ -99,6 +102,7 @@ h1:before {
 	width: 570px;
 	padding-left: 350px;
 }
+/* カード、通帳のデザイン部分ーーーーーーーーーーーーーー */
 .card {
 	width: 300px;
 	padding-left: 30px;
@@ -131,6 +135,7 @@ h1:before {
 	padding: 10px;
 	background-color: rgb(180, 180, 180);
 }
+/* 入力ーーーーーーーーーーーーーーーーーーーーーーー */
 .radio {
 	display: none;
 }
@@ -174,7 +179,6 @@ h1:before {
 	background-color: #e67168;
 	color: #fff;
 }
-
 #submitBtn {
 	display: inline-block;
 	padding: 0.5em 1em;
@@ -190,6 +194,7 @@ h1:before {
 	border-bottom: none;
 }
 
+/* 通帳のアニメーションーーーーーーーーーーーーーー */
 @keyframes slideUp {
 	from {
 		transform: translateY(0);
@@ -198,7 +203,6 @@ h1:before {
 		transform: translateY(-450px);
 	}
 }
-
 @keyframes slideDown {
 	from {
 		transform: translateY(-450px);
@@ -208,6 +212,7 @@ h1:before {
 	}
 }
 
+/* 通帳、影、横線ーーーーーーーーーーーーーーーー */
 .table-container {
 	position: absolute;
 	top: 150px;
@@ -215,7 +220,6 @@ h1:before {
 	width: 600px;
 	animation: slideDown 1s ease-in-out forwards;
 }
-
 .table-container.finish {
 	animation: slideUp 1s ease-in-out forwards;
 }
@@ -249,7 +253,7 @@ h1:before {
 	height: 2px;
 	background-color: black;
 }
-
+/* ーーーーーーーーーーーーーーーーーーーーーー */
 @media screen and (max-width: 1240px){
 	.card {
 		display: none;
@@ -258,9 +262,11 @@ h1:before {
 		display: none;
 	}
 }
+/* タブレットの場合ーーーーーーーーーーーーー */
 @media screen and (max-width: 770px){
 	.table-container{
 		width: 400px;
+		font-size: 14px;
 	}
 	.book{
 		width: 420px;
@@ -273,14 +279,14 @@ h1:before {
 		padding: 2px;
 	}
 	.th_name{
-		padding: 0 10px;
+		width: 100px;
 	}
 	.table-container > table td{
 		padding: 2px 2px;
 	}
 	.select_button{
 		left: 100px;
-		top: 90%;
+		top: 100%;
 	}
 	.table-container > table, .square, .shadow, .border{
 		width: 400px;
@@ -290,7 +296,11 @@ h1:before {
 		background-size: 100% 6px;
 	}
 }
-@media screen and (max-width: 390px){
+/* スマホの場合ーーーーーーーーーーーー */
+@media screen and (max-width: 320px){
+	.container{
+		width: 385px;
+	}
 	.table-container{
 		width: 360px;
 	}
@@ -315,7 +325,7 @@ h1:before {
 	}
 	.table-container > table, .square, .shadow, .border{
 		width: 370px;
-		left: 0;
+		left: -5px;
 	}
 	.in_box{
 		margin: 5px 0px 5px 150px;
@@ -326,13 +336,20 @@ h1:before {
 		top: 70%;
 	}
 	.select_button label{
-		width: 30px;
+		width: 10px;
+	}
+	.select_button input{
+		padding: 0;
+	}
+	#submitBtn{
+		padding: 6px 9px;
 	}
 	.thing{
 		margin-left: 10px;
 		width: 80px;
 	}
 }
+/* ページ移動ボタンーーーーーーーーーー */
 .prev{
 	position: absolute;
 	top: 540px;
@@ -343,6 +360,7 @@ h1:before {
 	top: 545px;
 	left: 915px;
 }
+/* 電卓ーーーーーーーーーーーーーーーー */
 .dentaku_box{
 	position: absolute;
 	top: 290px;
@@ -382,8 +400,7 @@ td input:before {
 	border-style: solid;
 	border-color: transparent;
 	border-bottom-color: #FFF;
-}
-    
+}   
 td input:after {  
 	content: " ";
 	position: absolute;
@@ -401,7 +418,6 @@ td input:active {
 	-webkit-transform: translate(2px,2px);
 	transform: translate(2px,2px);
 }
-    
 td input:active:after, td input:active:before {
 	content: none;
 }
@@ -417,3 +433,4 @@ td input:hover {
 .operator:active {
 	background: #2c80b4;
 }
+/* ーーーーーーーーーーーーーーーーーーーーー */
