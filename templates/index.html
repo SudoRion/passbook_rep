@@ -9,19 +9,24 @@
 		<link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap" rel="stylesheet">
 		<title>フォームページ</title>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+		<script type="text/javascript" src="https://github.com/nagix/chartjs-plugin-colorschemes/releases/download/v0.2.0/chartjs-plugin-colorschemes.min.js"></script>
 	</head>
 	<body>
+		<!-- 銀行名変更の場合表示 -->
 		<div id="title_boxN" style="display: none;">
 			<input id="new_title" type="text" maxlength="10">
-			<!-- <button onclick="updateTitle()">更新</button> -->
 			<a href="#" class="btn-square-toy" onclick="updateTitle()">OK</a>
 		</div>
+		<!-- 銀行名 -->
 		<div id="title_boxO" onclick="editName()">
 			<h1 id="old_title">まるまるぎんこう</h1>
 		</div>
+		<!-- 通帳が上部に移動する際透けないようにするためのブロック -->
 		<div class="top_space"></div>
 		<div class="container">
 			<div class="book">
+				<!-- 通帳ブロック_デザイン -->
 				<div class="box">
 					<div class="box_content">
 						<div>
@@ -33,40 +38,24 @@
 				</div>
 				<div class="space"></div>
 				<div class="box2">
+					<!-- 移動する通帳 -->
 					<div class="table-container"  {% if not account %}hidden{% endif %}>
 						<div class="in_box"><span id="in_title" sty>まるまるぎんこう</span>ふつうよきん</div>
 						<table>
 							<tr>
-								<!-- <th>id</th> -->
 								<th>年 - 月 - 日</th>
 								<th class="th_name">ことがら</th>
-								<th>金額</th>
-								<!-- <th>出入金</th> -->
-								<th>支払い</th>
-								<th>預かり</th>
-								<th>合計</th>
+								<th>しはらい</th>
+								<th>あずかり</th>
+								<th>ごうけい</th>
 							</tr>
 						{% for pay in account %}
 							<tr>
-								<!-- <td>{{ pay.id }}</td> -->
-								<td>{{ pay.pay_date }}</td>
-								<td onclick="editTask(this)">{{ pay.pay_name }}</td>
-								<td>{{ pay.amount }}</td>
-								<!-- <td>{{ pay.pay_which }}</td> -->
-								<td><span class="zero-value">{{ pay.pay_amount }}</span></td>
-								<td>{{ pay.get_amount }}</td>
-								<td>{{ pay.sum_amount }}</td>
-							</tr>
-							<tr>
-								<td colspan="7">
-								    <form method="POST" action="/edit" style="display: none;" class="editblock">
-									  <input type="hidden" name="id" value="{{ pay.id }}">
-									  <div>
-										<input type="text" name="update_task" id="update_task">
-										<button type="submit">更新</button>
-									  </div>
-								    </form>
-								</td>
+								<td style="text-align: center;">{{ pay.pay_date }}</td>
+								<td>{{ pay.pay_name }}</td>
+								<td style="text-align: right;"><span class="zero-value">{{ pay.pay_amount }}</span></td>
+								<td style="text-align: right;">{{ pay.get_amount }}</td>
+								<td style="text-align: right;">{{ pay.sum_amount }}</td>
 							</tr>
 						{% endfor %}
 						</table>
@@ -75,8 +64,8 @@
 						<div class="border"></div>
 					</div>
 				</div>
-				
 			</div>
+			<!-- カードブロック_デザイン -->
 			<div class="card">
 				<div class="box">
 					<div class="box_content">
@@ -91,6 +80,8 @@
 				<div class="box2"></div>
 			</div>
 		</div>
+
+		<!-- 入力 -->
 		<div class="select_button">
 			<form method="POST" action="/" id="myForm">
 				<input class="radio" type="radio" name="pay_which" id="on" value="+" checked="">
@@ -98,13 +89,15 @@
 				<input class="radio" type="radio" name="pay_which" id="off" value="-">
 				<label for="off" class="switch-off">-</label>
 	
-				<input type="text" name="text" placeholder ="概要" maxlength="10">
-				<input type="number" name="amount" placeholder="金額">
-				<input type="date" name="date" id="payDate">
+				<input type="text" name="text" placeholder ="ことがら" maxlength="10" class="thing">
+				<input type="number" name="amount" placeholder="きんがく" class="thing" id="input_amount">
+				<input type="hidden" name="date" id="payDate">
+				<input type="hidden" name="set_month" id="set_month">
 				<input type="submit" value="送信" id="submitBtn">
 			</form>
 		</div>
 
+		<!-- 10件以上で次ページができた場合移動ボタンを表示 -->
 		{% if account %}
 		<div class="pagination">
 		{% if page > 1 %}
@@ -116,12 +109,51 @@
 		</div>
 		{% endif %}
 
-		<!-- <canvas id="stage"></canvas> -->
-		<div style="position:relative;width:300px;height:250px;">
+		<!-- 月毎のグラフ -->
+		<div style="position:absolute;width:300px;height:300px;top: 140px;">
 			<canvas id="stage"></canvas>
 		</div>
 
+		<!-- 収支のグラフ -->
+		<div style="position:absolute;width:300px;height:250px;top: 300px;">
+			<canvas id="pie_canvas"></canvas>
+		</div>
+		
+		<!-- 電卓 -->
+		<div class="dentaku_box">
+			<form name="dentaku">
+				<table class="dentaku_table">
+					<tr>
+					<td><input type="button" value="7" onclick="get_calc(this)"></td>
+					<td><input type="button" value="8" onclick="get_calc(this)"></td>
+					<td><input type="button" value="9" onclick="get_calc(this)"></td>
+					<td><input type="button" value="万" class="operator" name="div_btn" onclick="get_calc(this)"></td>
+					</tr>
+					
+					<tr>
+					<td><input type="button" value="4" onclick="get_calc(this)"></td>
+					<td><input type="button" value="5" onclick="get_calc(this)"></td>
+					<td><input type="button" value="6" onclick="get_calc(this)"></td>
+					<td><input type="button" value="千" class="operator" name="multi_btn" onclick="get_calc(this)"></td>
+					</tr>
+				
+					<tr>
+					<td><input type="button" value="1" onclick="get_calc(this)"></td>
+					<td><input type="button" value="2" onclick="get_calc(this)"></td>
+					<td><input type="button" value="3" onclick="get_calc(this)"></td>
+					</tr>
+				
+					<tr>
+					<td><input type="button" value="C" class="operator" onclick="clearAmount()"></td>
+					<td><input type="button" value="0" onclick="get_calc(this)"></td>
+					</tr>
+				
+				</table>
+			</form>
+		</div>
+
 		<script>
+			// 日付ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 			const today = new Date();
 			function dateFormat(today, format){
 				format = format.replace("YYYY", today.getFullYear());
@@ -130,39 +162,65 @@
 				return format;
 			}
 			const data = dateFormat(today,'YYYY-MM-DD');
-			const field = document.getElementById("payDate");
-			field.value = data;
-			field.setAttribute("min", data);
+			const set_date = document.getElementById("payDate");
+			set_date.value = data;
+			set_date.setAttribute("min", data);
 
+			const month_format = today.getMonth() + 1;
+			const set_month = document.getElementById("set_month");
+			set_month.value = month_format;
 
-			//「月別データ」
+			// 月毎のグラフーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+			var sumMonthData = [
+				{% for sum in sum_month_table %}
+					{{ sum.sum_amount }},
+				{% endfor %}
+			];
+
 			var mydata = {
-			labels: ["１月", "２月", "３月", "４月", "５月", "６月", "７月"],
+			labels: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
 			datasets: [
 			{
-				label: '数量',
+				label: '円',
 				hoverBackgroundColor: "rgba(255,99,132,0.3)",
-				data: [65, 59, 80, 81, 56, 55, 48],
+				data: sumMonthData,
 			}
 			]
 			};
 
-			//「オプション設定」
-			var options = {
+			var options1 = {
 				title: {    
 				display: true,
-				text: 'サンプルチャート'
+				text: '月ごとのきんがく'
 				},
 			};
 
 			var canvas = document.getElementById('stage');
 			var chart = new Chart(canvas, {
-
-				type: 'bar',  //グラフの種類
-				data: mydata,  //表示するデータ
-				options: options  //オプション設定
+				type: 'bar',
+				data: mydata,
+				options: options1
 			});
 
+			// 収支のグラフーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+			var totalGetAmounut = {{ total_get_amount }};
+			var totalPayAmounut = {{ total_pay_amount }};
+			
+			var pie_canvas = document.getElementById("pie_canvas")
+			new Chart(pie_canvas, {
+				type: 'doughnut',
+				data: {
+					labels: ["もらったお金","つかったお金"],
+					datasets: [{
+					data: [totalGetAmounut,totalPayAmounut]
+					}]
+				},
+				options: {
+					responsive: false,
+				}
+			});
+
+			// アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 			document.getElementById("myForm").addEventListener("submit", function (event) {
 				event.preventDefault();
 				var tableContainer = document.querySelector(".table-container");
@@ -172,21 +230,7 @@
 					}, 1500);
 				});
 
-			
-
-			function editTask(taskDiv) {
-				var editblock = document.getElementsByClassName("editblock")[0];
-				var taskInput = document.getElementById("update_task");
-				// var taskInput = editblock.querySelector('input[name="update_task"]');
-				taskInput.style.width = "120px"
-				editblock.style.margin = "0 140px"
-				editblock.style.display = "flex"
-				taskInput.focus();
-
-				console.log(taskDiv);
-				console.log(editblock);
-			}
-
+			// 銀行名変更ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 			function editName(){
 				var titleBoxN = document.getElementById("title_boxN");
 				var titleBoxO = document.getElementById("title_boxO");
@@ -197,6 +241,7 @@
 				newTitle.value = oldTitle.textContent;
 				newTitle.focus();
 			}
+
 			function updateTitle(){
 				var newTitle = document.getElementById("new_title").value;
 				var oldTitle = document.getElementById("old_title");
@@ -207,6 +252,23 @@
 				var titleBoxO = document.getElementById("title_boxO");
 				titleBoxN.style.display = "none";
 				titleBoxO.style.display = "block";
+			}
+
+			// 電卓ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+			function get_calc(btn) {
+				const amountField = document.getElementById("input_amount");
+				if (btn.value === "万") {
+					amountField.value += "0000";
+				} else if (btn.value === "千") {
+					amountField.value += "000";
+				} else {
+					amountField.value += btn.value;
+				}
+			}
+
+			function clearAmount() {
+				const amountField = document.getElementById("input_amount");
+				amountField.value = "";
 			}
 		</script>
 	</body>
